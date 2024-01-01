@@ -1,6 +1,6 @@
 {
   "name": "bahnhof-price-check",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Check the current price of Bahnhof's internet service and send an email if the price has changed.",
   "main": "bahnhof.mjs",
   "scripts": {
