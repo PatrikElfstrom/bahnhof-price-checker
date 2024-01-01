@@ -1,16 +1,20 @@
-FROM alpine:latest
+FROM node:lts-alpine
 
 WORKDIR /app
 
-# Installs latest Chromium (100) package.
-# RUN apk add --no-cache nodejs npm
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
+
+# Install jq and curl
+RUN apk add --no-cache jq curl
 
 COPY package*.json ./
 
-# RUN npm ci --omit=dev
+RUN npm ci && npm cache clean --force
 
-COPY bahnhof.mjs ./
+COPY src/* ./
 
-# CMD [  ]
+ARG CRON_SCHEDULE
+RUN echo "$CRON_SCHEDULE node /app/bahnhof.mjs" > /etc/crontabs/root
 
-#EXPOSE 3000
+CMD ["/usr/sbin/crond", "-f"]
