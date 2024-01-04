@@ -4,7 +4,7 @@ FROM denoland/deno:alpine
 RUN apk add --no-cache jq curl
 
 ARG CRON_SCHEDULE
-RUN echo "$CRON_SCHEDULE run --allow-net --allow-sys --allow-env /app/bahnhof.ts" > /etc/crontabs/root
+RUN echo "$CRON_SCHEDULE deno run --allow-net --allow-sys --allow-env --allow-run /app/bahnhof.ts" > /etc/crontabs/root
 
 WORKDIR /app
 
