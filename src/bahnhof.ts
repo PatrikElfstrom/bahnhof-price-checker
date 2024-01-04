@@ -1,16 +1,16 @@
-import nodemailer from "nodemailer";
-import { execSync } from "child_process";
+// @deno-types="npm:@types/nodemailer"
+import nodemailer from "npm:nodemailer";
 
-const address = process.env.ADDRESS;
-const currentSpeed = process.env.CURRENT_SPEED;
-const currentPrice = process.env.CURRENT_PRICE;
-const mailSubject = process.env.MAIL_SUBJECT;
-const mailFrom = process.env.MAIL_FROM;
-const mailTo = process.env.MAIL_TO;
-const mailHost = process.env.MAIL_HOST;
-const mailPort = process.env.MAIL_PORT;
-const mailUsername = process.env.MAIL_USERNAME;
-const mailPassword = process.env.MAIL_PASSWORD;
+const address = Deno.env.get("ADDRESS");
+const currentSpeed = Deno.env.get("CURRENT_SPEED");
+const currentPrice = Deno.env.get("CURRENT_PRICE");
+const mailSubject = Deno.env.get("MAIL_SUBJECT");
+const mailFrom = Deno.env.get("MAIL_FROM");
+const mailTo = Deno.env.get("MAIL_TO");
+const mailHost = Deno.env.get("MAIL_HOST");
+const mailPort = Deno.env.get("MAIL_PORT");
+const mailUsername = Deno.env.get("MAIL_USERNAME");
+const mailPassword = Deno.env.get("MAIL_PASSWORD");
 
 if (
   !address ||
@@ -25,20 +25,18 @@ if (
   !mailPassword
 ) {
   console.error("Missing required environment variables.");
-  process.exit(1);
+  Deno.exit(1);
 }
 
-function sendMail(text, callback) {
-  const config = {
+function sendMail(text: string, callback: () => void) {
+  const transporter = nodemailer.createTransport({
     host: mailHost,
-    port: mailPort,
+    port: Number(mailPort),
     auth: {
       user: mailUsername,
       pass: mailPassword,
     },
-  };
-
-  const transporter = nodemailer.createTransport(config);
+  });
 
   transporter.sendMail(
     {
@@ -59,9 +57,16 @@ function sendMail(text, callback) {
 }
 
 try {
-  const stdout = execSync(`./getPrices.sh "${address}"`, { encoding: "utf-8" });
+  const command = new Deno.Command("./getPrices.sh", {
+    args: [address],
+  });
 
-  const products = stdout.split("\n");
+  const { code, stdout, stderr } = command.outputSync();
+  const stdoutString = stdout.toString();
+
+  // const stdout = execSync(`./getPrices.sh "${address}"`, { encoding: "utf-8" });
+
+  const products = stdoutString.split("\n");
   products.forEach((line) => {
     const [speed, price] = line.split(" ");
 
@@ -70,23 +75,23 @@ try {
         console.log(
           `You have the current price for ${speed} which is ${price} SEK.`
         );
-        process.exit(0);
+        Deno.exit();
       } else if (price > currentPrice) {
         const message = `Price increased from ${currentPrice} to ${price}`;
         console.log(message);
         sendMail(message, () => {
-          process.exit(0);
+          Deno.exit();
         });
       }
 
       const message = `Price decreased from ${currentPrice} to ${price}`;
       console.log(message);
       sendMail(message, () => {
-        process.exit(1);
+        Deno.exit(1);
       });
     }
   });
 } catch (error) {
   console.error(error);
-  process.exit(1);
+  Deno.exit(1);
 }
