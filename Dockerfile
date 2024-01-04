@@ -2,7 +2,7 @@ FROM denoland/deno:alpine
 
 WORKDIR /app
 
-USER bahnhof
+USER deno
 
 # Install jq and curl
 RUN apk add --no-cache jq curl
