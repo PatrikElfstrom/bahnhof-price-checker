@@ -1,5 +1,4 @@
-// @deno-types="npm:@types/nodemailer"
-import nodemailer from "npm:nodemailer";
+import { nodemailer } from "./deps.ts";
 
 const address = Deno.env.get("ADDRESS");
 const currentSpeed = Deno.env.get("CURRENT_SPEED");
