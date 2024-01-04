@@ -1,5 +1,7 @@
 import { nodemailer } from "./deps.ts";
 
+console.log("Running Bahnhof Price Checker");
+
 const address = Deno.env.get("ADDRESS");
 const currentSpeed = Deno.env.get("CURRENT_SPEED");
 const currentPrice = Deno.env.get("CURRENT_PRICE");
@@ -60,12 +62,10 @@ try {
     args: [address],
   });
 
-  const { code, stdout, stderr } = command.outputSync();
-  const stdoutString = stdout.toString();
+  const { stdout } = command.outputSync();
+  const productsString = new TextDecoder().decode(stdout);
 
-  // const stdout = execSync(`./getPrices.sh "${address}"`, { encoding: "utf-8" });
-
-  const products = stdoutString.split("\n");
+  const products = productsString.split("\n");
   products.forEach((line) => {
     const [speed, price] = line.split(" ");
 
