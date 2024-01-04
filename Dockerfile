@@ -7,7 +7,7 @@ USER bahnhof
 # Install jq and curl
 RUN apk add --no-cache jq curl
 
-COPY deps.ts .
+COPY src/deps.ts .
 RUN deno cache deps.ts
 
 COPY src/* ./
