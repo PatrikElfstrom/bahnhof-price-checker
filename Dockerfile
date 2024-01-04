@@ -1,11 +1,11 @@
 FROM denoland/deno:alpine
 
+# Install jq and curl
+RUN apk add --no-cache jq curl
+
 WORKDIR /app
 
 USER deno
-
-# Install jq and curl
-RUN apk add --no-cache jq curl
 
 COPY src/deps.ts .
 RUN deno cache deps.ts
