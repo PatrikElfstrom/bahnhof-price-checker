@@ -29,22 +29,22 @@ services:
     restart: always
 ```
 
-### Call bash script directly
+### Call shell scripts directly
 
 Clone the repo and just call comparePrice.sh with your current speed, price and address.
-No mail will be sent using this.
+No mail will be sent using this method.
 
-Requires jq, cURL and GNU Grep.
+Requires jq, cURL and Sed.
 
 ```console
-$ ./src/comparePrice.sh 500/100 459 "Rådhusgatan 5, 590 37 Kisa, Sweden"
+$ ./comparePrice.sh 500/100 459 "Rådhusgatan 5, 590 37 Kisa, Sweden"
 The current price for 500/100 is 359 SEK which is lower than what you are paying.
 ```
 
 Or to just get the current prices:
 
 ```console
-$ ./src/getPrices.sh "Rådhusgatan 5, 590 37 Kisa, Sweden"
+$ ./getPrices.sh "Rådhusgatan 5, 590 37 Kisa, Sweden"
 10/10 249
 100/10 259
 100/100 299
