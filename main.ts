@@ -29,7 +29,7 @@ const address = env["ADDRESS"] ?? Deno.env.get("ADDRESS");
 const currentSpeed = env["CURRENT_SPEED"] ?? Deno.env.get("CURRENT_SPEED");
 const currentPrice = env["CURRENT_PRICE"] ?? Deno.env.get("CURRENT_PRICE");
 
-const command = new Deno.Command(Deno.cwd() + "/comparePrices.sh", {
+const command = new Deno.Command("/app/comparePrices.sh", {
   args: [currentSpeed, currentPrice, address],
 });
 
