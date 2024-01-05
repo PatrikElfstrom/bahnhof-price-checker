@@ -1,4 +1,4 @@
-import { load } from "./deps.ts";
+import { dirname, fromFileUrl, join, load } from "./deps.ts";
 import { sendMail } from "./sendMail.ts";
 
 console.log("💸 Running Bahnhof Price Checker...");
@@ -28,8 +28,9 @@ for (const variable of environmentVariables) {
 const address = env["ADDRESS"] ?? Deno.env.get("ADDRESS");
 const currentSpeed = env["CURRENT_SPEED"] ?? Deno.env.get("CURRENT_SPEED");
 const currentPrice = env["CURRENT_PRICE"] ?? Deno.env.get("CURRENT_PRICE");
+const currentDirectory = dirname(fromFileUrl(import.meta.url));
 
-const command = new Deno.Command("/app/comparePrices.sh", {
+const command = new Deno.Command(join(currentDirectory, "./comparePrices.sh"), {
   args: [currentSpeed, currentPrice, address],
 });
 

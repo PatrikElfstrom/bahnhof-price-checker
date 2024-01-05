@@ -10,7 +10,10 @@ SPEED="$1"
 PRICE="$2"
 ADDRESS="$3"
 
-RESPONSE=$(/app/getPrices.sh "$ADDRESS")
+# Change working directory to the directory of this script
+cd -P -- "$(dirname -- "$0")"
+
+RESPONSE=$(./getPrices.sh "$ADDRESS")
 
 RED='\e[0;31m'
 GREEN='\e[0;32m'
