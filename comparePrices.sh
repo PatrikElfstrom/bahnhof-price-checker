@@ -10,7 +10,7 @@ SPEED="$1"
 PRICE="$2"
 ADDRESS="$3"
 
-RESPONSE=$(./getPrices.sh "$ADDRESS")
+RESPONSE=$(/app/getPrices.sh "$ADDRESS")
 
 RED='\e[0;31m'
 GREEN='\e[0;32m'
