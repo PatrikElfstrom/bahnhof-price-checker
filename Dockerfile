@@ -9,7 +9,7 @@ RUN echo "$CRON_SCHEDULE deno run --allow-net --allow-sys --allow-env --allow-ru
 
 WORKDIR /app
 
-USER deno
+# USER deno
 
 COPY deps.ts .
 RUN deno cache deps.ts
