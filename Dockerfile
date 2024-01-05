@@ -1,20 +1,19 @@
-FROM node:lts-alpine
+FROM denoland/deno:alpine
+
+RUN apk add --no-cache jq curl
+
+ARG CRON_SCHEDULE
+RUN echo "$CRON_SCHEDULE deno run --allow-net --allow-sys --allow-env --allow-run --allow-read /app/main.ts" >> /var/spool/cron/crontabs/root
 
 WORKDIR /app
 
-ARG NODE_ENV=production
-ENV NODE_ENV $NODE_ENV
+COPY deps.ts .
+RUN deno cache deps.ts
 
-# Install jq and curl
-RUN apk add --no-cache jq curl
+COPY * ./
 
-COPY package*.json ./
+RUN chmod +x *.sh
 
-RUN npm ci && npm cache clean --force
-
-COPY src/* ./
-
-ARG CRON_SCHEDULE
-RUN echo "$CRON_SCHEDULE node /app/bahnhof.mjs" > /etc/crontabs/root
+RUN deno cache main.ts
 
 CMD ["/usr/sbin/crond", "-f"]

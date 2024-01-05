@@ -4,3 +4,5 @@ node_modules/
 cookiejar
 
 .DS_Store
+
+.env

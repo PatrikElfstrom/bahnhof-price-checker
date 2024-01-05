@@ -8,7 +8,7 @@ fi
 ADDRESS="$1"
 
 if [ -z "$ADDRESS" ]; then
-    echo "Please provide an address as an argument."
+    echo "❌ Please provide an address as an argument."
     exit 1
 fi
 
