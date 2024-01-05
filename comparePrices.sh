@@ -12,9 +12,9 @@ ADDRESS="$3"
 
 RESPONSE=$(./getPrices.sh "$ADDRESS")
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
+RED='\e[0;31m'
+GREEN='\e[0;32m'
+NC='\e[0m'
 MATCH_FOUND=false
 
 while IFS= read -r line; do
@@ -23,13 +23,13 @@ while IFS= read -r line; do
 
     if [ "$RESPONSE_SPEED" == "$SPEED" ]; then
         if [ "$RESPONSE_PRICE" -eq "$PRICE" ]; then
-            echo -e "${GREEN}You have the current price for $SPEED which is $RESPONSE_PRICE SEK.${NC}"
+            printf "✅ ${GREEN}You have the current price for $SPEED which is $RESPONSE_PRICE SEK.${NC}"
             exit 0
         elif [ "$RESPONSE_PRICE" -gt "$PRICE" ]; then
-            echo -e "${GREEN}The current price for $SPEED is $RESPONSE_PRICE SEK which is higher than what you are paying.${NC}"
+            printf "✅ ${GREEN}The current price for $SPEED is $RESPONSE_PRICE SEK which is higher than what you are paying.${NC}"
             exit 0
         else
-            echo -e "${RED}The current price for $SPEED is $RESPONSE_PRICE SEK which is lower than what you are paying.${NC}"
+            printf "❌ ${RED}The current price for $SPEED is $RESPONSE_PRICE SEK which is lower than what you are paying.${NC}"
             exit 1
         fi
     fi
@@ -39,6 +39,6 @@ $RESPONSE
 EOF
 
 if ! $MATCH_FOUND; then
-    echo -e "${RED}The speed $SPEED was not found in the product listing.${NC}"
+    printf "❌ ${RED}The speed $SPEED was not found in the product listing.${NC}"
     exit 1
 fi

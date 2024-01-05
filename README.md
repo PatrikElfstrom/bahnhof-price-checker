@@ -4,6 +4,31 @@ Check the current price of Bahnhof's internet service and send an email if the p
 
 ## Usage
 
+### Docker compose
+
+```
+version: '3'
+services:
+  bahnhof:
+    build:
+      context: .
+      args:
+        - CRON_SCHEDULE=0 0 * * *
+    container_name: bahnhof
+    environment:
+      - ADDRESS=Rådhusgatan 5, 590 37 Kisa, Sweden
+      - CURRENT_SPEED=500/100
+      - CURRENT_PRICE=459
+      - MAIL_SUBJECT=Bahnhof Price Change
+      - MAIL_FROM=yourserver@example.com
+      - MAIL_TO=you@example.com
+      - MAIL_HOST=mailhost.example.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=your_mail_username
+      - MAIL_PASSWORD=your_mail_password
+    restart: always
+```
+
 ### Call bash script directly
 
 Clone the repo and just call comparePrice.sh with your current speed, price and address.
@@ -29,29 +54,4 @@ $ ./src/getPrices.sh "Rådhusgatan 5, 590 37 Kisa, Sweden"
 500/500 539
 1000/100 579
 1000/1000 829
-```
-
-### Docker compose
-
-```
-version: '3'
-services:
-  bahnhof:
-    build:
-      context: .
-      args:
-        - CRON_SCHEDULE=0 0 1 * *
-    container_name: bahnhof
-    environment:
-      - ADDRESS=Rådhusgatan 5, 590 37 Kisa, Sweden
-      - CURRENT_SPEED=500/100
-      - CURRENT_PRICE=459
-      - MAIL_SUBJECT=Bahnhof Price Change
-      - MAIL_FROM=yourserver@example.com
-      - MAIL_TO=you@example.com
-      - MAIL_HOST=mailhost.example.com
-      - MAIL_PORT=587
-      - MAIL_USERNAME=your_mail_username
-      - MAIL_PASSWORD=your_mail_password
-    restart: always
 ```
