@@ -23,6 +23,7 @@ services:
       - MAIL_PORT=587
       - MAIL_USERNAME=your_mail_username
       - MAIL_PASSWORD=your_mail_password
+      - CRON_SCHEDULE=0 0 * * *
     restart: always
 ```
 
