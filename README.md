@@ -9,12 +9,9 @@ Check the current price of Bahnhof's internet service and send an email if the p
 ```
 version: '3'
 services:
-  bahnhof:
-    build:
-      context: .
-      args:
-        - CRON_SCHEDULE=0 0 * * *
-    container_name: bahnhof
+  bahnhof-price-checker:
+    image: ghcr.io/patrikelfstrom/bahnhof-price-checker:latest
+    container_name: bahnhof-price-checker
     environment:
       - ADDRESS=Rådhusgatan 5, 590 37 Kisa, Sweden
       - CURRENT_SPEED=500/100
