@@ -18,4 +18,4 @@ COPY src/* ./
 
 RUN deno cache bahnhof.ts
 
-CMD ["/usr/sbin/crond"]
+CMD ["/usr/sbin/crond", "-f"]
