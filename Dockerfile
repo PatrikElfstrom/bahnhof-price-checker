@@ -12,6 +12,8 @@ RUN deno cache deps.ts
 
 COPY * ./
 
+RUN chmod +x *.sh
+
 RUN deno cache main.ts
 
 CMD ["/usr/sbin/crond", "-f"]
